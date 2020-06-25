@@ -28,6 +28,14 @@ def get_member(link, group_name):
   driver.get(link)
   time.sleep(3)
   member_content = soup(driver.page_source, 'html.parser')
+  try:
+    contact_info = member_content.findAll('li',{"class":"_1zw6 _md0 _5h-n _5vb9"})
+    for i in range(len(contact_info)):
+      index = len(contact_info[i].div.i['class'])
+      if(contact_info[i].div.i['class'][index-1] == "sx_1112e7"):
+        contact_detail[3] = contact_info[i].div.find('a').text
+  except:
+    pass
 
   member_name = member_content.find(id = "fb-timeline-cover-name").text
   contact_detail[2] = member_name
