@@ -69,12 +69,7 @@ def get_member(link, group_name):
           contact_detail[5] = re.search(r'\d+', address_detail[0]).group(0)
           contact_detail[4] = address_detail[1]
   contact_detail[7] = "+56 9 8293 7832"
-  # time.sleep(5)
-  # contact_info_button = driver.find_element_by_xpath("//ul[contains(@class, 'uiList _54nz _4kg _4kt')]/li[2]/div/div[1]/div/div/div/a[4]")
-  # print(contact_info_button)
-  # contact_info_button.click()
 
-  # contact_button_list[0].click()
   print(contact_detail)
   with open('Facebook_group_memeber_scraping.csv', mode='a', encoding="utf8", newline='') as contact_details:
       student_writer = csv.writer(contact_details, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
