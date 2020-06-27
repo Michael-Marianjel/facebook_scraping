@@ -48,7 +48,6 @@ def get_member(link, group_name):
     if (total_detail[j].div != None):
       detail_content = total_detail[j].div.findAll("div")
       index = len(detail_content)
-      # print(detail_content[0].div.i['class'])
       if(detail_content[0].div.i['class'][2] == "sx_896b3a"):
         contact_detail[6] = detail_content[index-1].text
       elif(detail_content[0].div.i['class'][2] == "sx_1be44d"):
@@ -88,29 +87,29 @@ def main():
   driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
 
   get_member("https://www.facebook.com/michael.marianjel.1/about?section=overview&lst=100051453571225%3A100052887162643%3A1593318452", "Payal kumari add me friends ❤️")
-  # # Get scroll height
-  # last_height = driver.execute_script("return document.body.scrollHeight")
+  # Get scroll height
+  last_height = driver.execute_script("return document.body.scrollHeight")
 
-  # while True:
-  #     # Scroll down to bottom
-  #     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+  while True:
+      # Scroll down to bottom
+      driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-  #     # Wait to load page
-  #     time.sleep(3)
+      # Wait to load page
+      time.sleep(3)
 
-  #     # Calculate new scroll height and compare with last scroll height
-  #     new_height = driver.execute_script("return document.body.scrollHeight")
-  #     if new_height == last_height:
-  #         # If heights are the same it will exit the function
-  #         break
-  #     last_height = new_height
+      # Calculate new scroll height and compare with last scroll height
+      new_height = driver.execute_script("return document.body.scrollHeight")
+      if new_height == last_height:
+          # If heights are the same it will exit the function
+          break
+      last_height = new_height
 
-  # time.sleep(5)
-  # memebers_content = soup(driver.page_source, 'html.parser')
-  # members = memebers_content.findAll("div",{"class":"clearfix _60rh _gse"})
-  # group_name = memebers_content.find(id = 'seo_h1_tag').text
-  # for i in range(len(members)):
-  #   if i > 6:
-  #     get_member(members[i].a['href'], group_name)
+  time.sleep(5)
+  memebers_content = soup(driver.page_source, 'html.parser')
+  members = memebers_content.findAll("div",{"class":"clearfix _60rh _gse"})
+  group_name = memebers_content.find(id = 'seo_h1_tag').text
+  for i in range(len(members)):
+    if i > 6:
+      get_member(members[i].a['href'], group_name)
 
 main()
