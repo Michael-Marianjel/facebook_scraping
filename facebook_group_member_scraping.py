@@ -75,7 +75,7 @@ def get_member(link, group_name):
       student_writer.writerow(contact_detail)
   
 def main():
-  driver.get("https://www.facebook.com/michael.marianjel.1/about?section=overview&lst=100051453571225%3A100052887162643%3A1593318452")
+  driver.get("https://www.facebook.com/")
 
   login_mail = "ckjaner2@gmail.com"
   login_pass = "Helloworld1"
@@ -85,8 +85,7 @@ def main():
   driver.find_element_by_xpath('//*[@id="email"]').send_keys(login_mail)
   driver.find_element_by_xpath('//*[@id="pass"]').send_keys(login_pass)
   driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
-
-  get_member("https://www.facebook.com/michael.marianjel.1/about?section=overview&lst=100051453571225%3A100052887162643%3A1593318452", "Payal kumari add me friends ❤️")
+  
   # Get scroll height
   last_height = driver.execute_script("return document.body.scrollHeight")
 
