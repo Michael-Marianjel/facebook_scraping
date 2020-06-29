@@ -10,6 +10,9 @@ with open('Facebook_group_memeber_scraping.csv', mode='a', encoding="utf8", newl
     student_writer = csv.writer(header_title, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     student_writer.writerow(titles)
 
+login_mail = input("Please input your facebook email: ")
+login_pass = input("Please input your facebook password: ")
+
 lk = os.path.join(os.getcwd(), "chromedriver",)
 chrome_options = webdriver.ChromeOptions()
 prefs = {"profile.default_content_setting_values.notifications" : 2}
@@ -53,7 +56,7 @@ def get_member(link, group_name):
         if(detail_content[0].div.i['class'][2] == "sx_896b3a"):
           contact_detail[6] = detail_content[index-1].text
         elif(detail_content[0].div.i['class'][2] == "sx_1be44d"):
-          phone_number = detail_content[index-1].text
+          contact_detail[7] = detail_content[index-1].text
         elif(detail_content[0].div.i['class'][2] == "sx_6c0b45"):
           total_address = detail_content[index-1].findAll("li")
           if(len(total_address) == 1):
@@ -81,41 +84,48 @@ def get_member(link, group_name):
       student_writer = csv.writer(contact_details, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
       student_writer.writerow(contact_detail)
 def main():
+
   driver.get("https://www.facebook.com/")
 
-  login_mail = "ckjaner2@gmail.com"
-  login_pass = "Helloworld1"
 
   time.sleep(2)
 
   driver.find_element_by_xpath('//*[@id="email"]').send_keys(login_mail)
   driver.find_element_by_xpath('//*[@id="pass"]').send_keys(login_pass)
   driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
-  
-  driver.get("https://www.facebook.com/groups/1310022065801315/members/")
-  # Get scroll height
-  last_height = driver.execute_script("return document.body.scrollHeight")
 
-  while True:
-      # Scroll down to bottom
-      driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+  time.sleep(2)
+  page_content = soup(driver.page_source, 'html.parser')
+  group_lists = page_content.find(id = 'pinnedNav').ul.findAll("li")
+  for j in range(len(group_lists)):
+    time.sleep(2)
+    driver.get("https://www.facebook.com/"+(group_lists[j].findAll("a")[1]['href']).replace("?ref=bookmarks","")+"members/")
 
-      # Wait to load page
-      time.sleep(5)
+    time.sleep(2)
 
-      # Calculate new scroll height and compare with last scroll height
-      new_height = driver.execute_script("return document.body.scrollHeight")
-      if new_height == last_height:
-          # If heights are the same it will exit the function
-          break
-      last_height = new_height
+    # Get scroll height
+    last_height = driver.execute_script("return document.body.scrollHeight")
 
-  time.sleep(5)
-  memebers_content = soup(driver.page_source, 'html.parser')
-  members = memebers_content.findAll("div",{"class":"clearfix _60rh _gse"})
-  group_name = memebers_content.find(id = 'seo_h1_tag').text
-  for i in range(len(members)):
-    if i > 6:
-      get_member(members[i].a['href'], group_name)
+    while True:
+        # Scroll down to bottom
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        # Wait to load page
+        time.sleep(5)
+
+        # Calculate new scroll height and compare with last scroll height
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            # If heights are the same it will exit the function
+            break
+        last_height = new_height
+
+    time.sleep(5)
+    memebers_content = soup(driver.page_source, 'html.parser')
+    members = memebers_content.findAll("div",{"class":"clearfix _60rh _gse"})
+    group_name = memebers_content.find(id = 'seo_h1_tag').text
+    for i in range(len(members)):
+      if i>0:
+        get_member(members[i].a['href'], group_name)
 
 main()
